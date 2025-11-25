@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cq026h2onkd8x"]
+
+[ext_resource type="SpriteFrames" uid="uid://c7kwrxn1ii4u8" path="res://duelyst-animated-sprites-godot-e9df7a6824b0f9fd16dc43534a93b6f150b13bca/addons/duelyst_animated_sprites/assets/spriteframes/units/boss_umbra.tres" id="1_4dvvg"]
+[ext_resource type="Script" uid="uid://bd3fqiqnhqyv2" path="res://hitbox.gd" id="2_rnjyy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4vge2"]
+size = Vector2(39, 27)
+
+[node name="Node2D" type="Node2D" groups=["enemy"]]
+
+[node name="Tutorial Enemy" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = ExtResource("1_4dvvg")
+animation = &"death"
+autoplay = "idle"
+frame = 9
+frame_progress = 1.0
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_mask = 2
+script = ExtResource("2_rnjyy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" groups=["enemy"]]
+position = Vector2(1, 8)
+shape = SubResource("RectangleShape2D_4vge2")
+
+[connection signal="area_entered" from="Hitbox" to="Hitbox" method="_on_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]
