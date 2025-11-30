@@ -8,9 +8,9 @@ var move = true
 @onready var attack_area: Area2D = $AnimatedSprite2D/Area2D
 @onready var enemy_hitbox: Area2D = $Hitbox
 var dead = false
-@onready var heart_1: TextureRect = $"../CanvasLayer/Control/TextureRect"
-@onready var heart_2: TextureRect = $"../CanvasLayer/Control/TextureRect2"
-@onready var heart_3: TextureRect = $"../CanvasLayer/Control/TextureRect3"
+@onready var heart_3: TextureRect = $"../CanvasLayer/Control/TextureRect"
+@onready var heart_1: TextureRect = $"../CanvasLayer/Control/TextureRect2"
+@onready var heart_2: TextureRect = $"../CanvasLayer/Control/TextureRect3"
 @onready var heart_4: TextureRect = $"../CanvasLayer/Control/TextureRect4"
 @onready var heart_5: TextureRect = $"../CanvasLayer/Control/TextureRect5"
 @onready var full_heart = preload("res://sprites/0x72_DungeonTilesetII_v1.7/frames/ui_heart_full.png")
@@ -20,7 +20,6 @@ var dead = false
 var health = 100
 
 func _ready() -> void:
-	label.text = "healths " + str(health)
 	attack_hitbox.disabled = true
 	attack_area.monitoring = false
 
@@ -47,13 +46,30 @@ func attack():
 
 func _process(_delta: float) -> void:
 
-	if health > 90 and health < 100:
+	if health >= 90 and not health == 100:
 		heart_5.texture = half_heart
-	elif health < 90 and health > 80:
+	elif health >= 80 and not health == 100:
 		heart_5.texture = empty_heart
-	elif health < 80 and health > 70:
-			heart_5.texture = empty_heart
+	else:
+		if health >= 70 and not health == 100:
 			heart_4.texture = half_heart
+		elif health >= 60 and not health == 100:
+			heart_4.texture = empty_heart
+		else:
+			if health >= 50 and not health == 100:
+				heart_3.texture = half_heart
+			elif health >=40 and not health == 100:
+				heart_3.texture = empty_heart
+			else:
+				if health >= 30 and not health == 100:
+					heart_2.texture = half_heart
+				elif health >= 20 and not health == 100:
+					heart_2.texture = empty_heart
+				else:
+					if health >= 10 and not health == 100:
+						heart_1.texture = half_heart
+					elif health >= 0 and not health == 100:
+						heart_1.texture = empty_heart
 
 	if is_attacking:
 		return
