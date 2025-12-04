@@ -8,6 +8,7 @@ var move = true
 @onready var attack_area: Area2D = $AnimatedSprite2D/Area2D
 @onready var enemy_hitbox: Area2D = $Hitbox
 var dead = false
+@onready var node_2d: Node2D = $"../Node2D"
 @onready var heart_3: TextureRect = $"../CanvasLayer/Control/TextureRect"
 @onready var heart_1: TextureRect = $"../CanvasLayer/Control/TextureRect2"
 @onready var heart_2: TextureRect = $"../CanvasLayer/Control/TextureRect3"
@@ -74,8 +75,7 @@ func _process(_delta: float) -> void:
 					elif health >= 0 and not health == 100: # changes to empty heart
 						heart_1.texture = empty_heart
 
-	if is_attacking: # checks if attacking
-		return
+
 
 	var direction = Vector2.ZERO
 
@@ -102,14 +102,14 @@ func _process(_delta: float) -> void:
 	
 
 	
-
-	if direction != Vector2.ZERO and not is_attacking and not is_hit:
+	if is_attacking:
+		pass
+	elif direction != Vector2.ZERO and not is_hit:
 		sprite.play("run") # plays running animarion if moving
-	else:
-		if health <= 20:
-			sprite.play("breathing") # plays breathing animation if health is low
-		else:
-			sprite.play("idle") # plays idle animation if not moving
+	elif health <= 20:
+		sprite.play("breathing") # plays breathing animation if health is low
+	elif not is_hit:
+		sprite.play("idle") # plays idle animation if not moving
 
 	if Input.is_action_pressed("Attack") and not is_attacking and not dead: # checks if attack button pressed
 		if sprite.flip_h: # switches hit box position along with thw character when changing direction
@@ -125,7 +125,7 @@ func _process(_delta: float) -> void:
 		await get_tree().create_timer(0.5).timeout
 		sprite.visible = false # player "dies"
 		
-
+	
 func take_damage(_amount):
 	is_hit = true
 	health -= _amount

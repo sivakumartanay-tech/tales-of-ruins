@@ -8,12 +8,12 @@ var velocity = Vector2.ZERO
 var is_moving = false
 var is_attacking = false
 var enemy_health = 50
-var is_not_moving = true
+var is_hit = false
 var player_inside = false
 var enemy_dead = false
 @onready var hitbox: Area2D = $Hitbox
 @onready var tutorial_enemy: AnimatedSprite2D = $"Tutorial Enemy"
-@onready var attack_hitbox: Area2D = $Area2D
+@onready var attack_hitbox: Area2D = $"Attack hitbox"
 @onready var collision_shape_2d: CollisionShape2D = $Hitbox/CollisionShape2D
 
 func _ready() -> void:
@@ -22,7 +22,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if is_moving and not is_attacking:
+	if is_moving and not is_attacking and not is_hit:
 		tutorial_enemy.play("run")
 	elif not is_attacking:
 		tutorial_enemy.play("idle")
@@ -47,11 +47,14 @@ func _physics_process(delta: float) -> void:
 	var distance = global_position.distance_to(player_1.global_position)
 
 	if distance < 50:
+		if velocity.x < 0:
+			attack_hitbox.position.x = -31.0
 		velocity = Vector2.ZERO
+		if player_1.health <= 0:
+			return
+		else:
+			enemy_attack()
 		return
-	
-	if distance < 50:
-		enemy_attack()
 	
 
 	if distance <= chase_range and not enemy_dead:
@@ -63,24 +66,39 @@ func _physics_process(delta: float) -> void:
 			tutorial_enemy.flip_h = true
 		else:
 			tutorial_enemy.flip_h = false
-	else:
+	elif velocity == Vector2.ZERO:
 		is_moving = false
 
 func enemy_attack():
-	var distance = global_position.distance_to(player_1.global_position)
+	if is_attacking:
+		return
+	if player_1.health <= 0:
+		is_moving = false
+		return
+	
+	is_attacking = true
+	is_moving = false
+	attack_hitbox.monitoring = true
+	
 
-	while distance < 50:
-		is_attacking = true
-		attack_hitbox.monitoring = true
-		tutorial_enemy.play("attack")
-		await get_tree().create_timer(1.5).timeout
+	player_1.take_damage(10)
+	tutorial_enemy.play("attack")
+	await tutorial_enemy.animation_finished
+	await get_tree().create_timer(1.0).timeout
+
+
+	
+	attack_hitbox.monitoring = false
+	is_attacking = false
+	is_moving = true
 
 
 func _on_hitbox_body_entered(_body: Node2D) -> void:
-		if _body.is_in_group("Player"):
-			player_inside = true # damages player if he enters enemy
-			damge_tick()
-			
+	print(_body)
+	if _body.is_in_group("Player"):
+		player_inside = true # damages player if he enters enemy
+		damge_tick()
+
 func damge_tick():
 	while player_inside:
 		player_1.take_damage(10)
@@ -91,14 +109,27 @@ func damge_tick():
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("damage"): # registers hits
-		is_not_moving = false
+		is_moving = false
+		is_hit = true
 		enemy_health -= 10 # damages enemy
+		
 		print(enemy_health) 
 		tutorial_enemy.play("hit") # plays hit animation
 		await tutorial_enemy.animation_finished
-		is_not_moving = true
+		is_hit = false
+		is_moving = true
 
 
 func _on_hitbox_body_exited(_body: Node2D) -> void:
 	if _body == player_1: # stops damageing if player left
 		player_inside = false # Replace with function body.
+
+
+func _on_attack_hitbox_body_entered(_body: Node2D) -> void:
+	if _body.is_in_group("Player"):
+		player_inside = true
+		player_1.take_damage(10)
+
+
+func _on_attack_hitbox_body_exited(_body: Node2D) -> void:
+	player_inside = false
