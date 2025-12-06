@@ -1,7 +1,6 @@
 extends Node2D
 @onready var player_1: CharacterBody2D = $"../Player1"
 const SPEED = 100
-var chasing = false
 var player = null
 var chase_range = 150
 var velocity = Vector2.ZERO
@@ -11,6 +10,7 @@ var enemy_health = 50
 var is_hit = false
 var player_inside = false
 var enemy_dead = false
+var enemy_scene = preload("res://scenes/enemy.gd")
 @onready var hitbox: Area2D = $Hitbox
 @onready var tutorial_enemy: AnimatedSprite2D = $"Tutorial Enemy"
 @onready var attack_hitbox: Area2D = $"Attack hitbox"
@@ -34,10 +34,12 @@ func _process(_delta: float) -> void:
 		collision_shape_2d.disabled = true
 		tutorial_enemy.play("death") # plays death animation
 		await tutorial_enemy.animation_finished
-		get_parent().visible = false # enemy "dies"
+		$".".queue_free() # enemy "dies"
 
 
-
+func _on_hitbox_body_exited(_body: Node2D) -> void:
+	if _body == player_1: # stops damageing if player left
+		player_inside = false # Replace with function body.
 
 
 func _physics_process(delta: float) -> void:
@@ -69,42 +71,7 @@ func _physics_process(delta: float) -> void:
 	elif velocity == Vector2.ZERO:
 		is_moving = false
 
-func enemy_attack():
-	if is_attacking:
-		return
-	if player_1.health <= 0:
-		is_moving = false
-		return
-	
-	is_attacking = true
-	is_moving = false
-	attack_hitbox.monitoring = true
-	
 
-	player_1.take_damage(10)
-	tutorial_enemy.play("attack")
-	await tutorial_enemy.animation_finished
-	await get_tree().create_timer(1.0).timeout
-
-
-	
-	attack_hitbox.monitoring = false
-	is_attacking = false
-	is_moving = true
-
-
-func _on_hitbox_body_entered(_body: Node2D) -> void:
-	print(_body)
-	if _body.is_in_group("Player"):
-		player_inside = true # damages player if he enters enemy
-		damge_tick()
-
-func damge_tick():
-	while player_inside:
-		player_1.take_damage(10)
-		await get_tree().create_timer(1.0).timeout
-		if player_1.health == 0:
-			break
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
@@ -116,20 +83,56 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		print(enemy_health) 
 		tutorial_enemy.play("hit") # plays hit animation
 		await tutorial_enemy.animation_finished
+		
 		is_hit = false
 		is_moving = true
 
 
-func _on_hitbox_body_exited(_body: Node2D) -> void:
-	if _body == player_1: # stops damageing if player left
-		player_inside = false # Replace with function body.
 
+#-------------Attack------------------------------
+func enemy_attack():
+	if is_attacking:
+		return
+	if player_1.health <= 0:
+		is_moving = false
+		return
+
+	is_attacking = true
+	is_moving = false
+	attack_hitbox.monitoring = true
+	print("ji")
+
+
+	tutorial_enemy.play("attack")
+	await tutorial_enemy.animation_finished
+	player_1.take_damage(10)
+
+		
+	attack_hitbox.monitoring = false
+	is_attacking = false
+	is_moving = true
+
+func damge_tick():
+	while player_inside:
+		player_1.take_damage(10)
+		await get_tree().create_timer(1.0).timeout
+		if player_1.health <= 0:
+			break
+
+func _on_hitbox_body_entered(_body: Node2D) -> void:
+	print(_body)
+	if _body.is_in_group("Player") and not enemy_dead:
+		player_inside = true # damages player if he enters enemy
+		damge_tick()
 
 func _on_attack_hitbox_body_entered(_body: Node2D) -> void:
 	if _body.is_in_group("Player"):
 		player_inside = true
-		player_1.take_damage(10)
+		if player_inside:
+			enemy_attack()
+
 
 
 func _on_attack_hitbox_body_exited(_body: Node2D) -> void:
 	player_inside = false
+#----------------------------------------------------------------
