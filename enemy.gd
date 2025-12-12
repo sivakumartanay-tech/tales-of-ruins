@@ -10,7 +10,7 @@ var enemy_health = 50
 var is_hit = false
 var player_inside = false
 var enemy_dead = false
-var enemy_scene = preload("res://scenes/enemy.gd")
+var enemy_scene = preload("res://scenes/node_2d.tscn")
 @onready var hitbox: Area2D = $Hitbox
 @onready var tutorial_enemy: AnimatedSprite2D = $"Tutorial Enemy"
 @onready var attack_hitbox: Area2D = $"Attack hitbox"
@@ -38,7 +38,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_hitbox_body_exited(_body: Node2D) -> void:
-	if _body == player_1: # stops damageing if player left
+	if _body.is_in_group("Players"): # stops damageing if player left
 		player_inside = false # Replace with function body.
 
 
@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	var distance = global_position.distance_to(player_1.global_position)
-
+	var distance2 = global_position.distance_to(player_1.global_position)
 	if distance < 50:
 		if velocity.x < 0:
 			attack_hitbox.position.x = -31.0
@@ -75,7 +75,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area.is_in_group("damage"): # registers hits
+	if area.is_in_group("damages"): # registers hits
 		is_moving = false
 		is_hit = true
 		enemy_health -= 10 # damages enemy
@@ -112,21 +112,19 @@ func enemy_attack():
 	is_attacking = false
 	is_moving = true
 
-func damge_tick():
-	while player_inside:
-		player_1.take_damage(10)
-		await get_tree().create_timer(1.0).timeout
-		if player_1.health <= 0:
-			break
 
 func _on_hitbox_body_entered(_body: Node2D) -> void:
 	print(_body)
-	if _body.is_in_group("Player") and not enemy_dead:
+	if _body.is_in_group("Players") and not enemy_dead:
 		player_inside = true # damages player if he enters enemy
-		damge_tick()
+		while player_inside:
+			_body.take_damage(10)
+			await get_tree().create_timer(1.0).timeout
+			if _body.health <= 0:
+				break
 
 func _on_attack_hitbox_body_entered(_body: Node2D) -> void:
-	if _body.is_in_group("Player"):
+	if _body.is_in_group("Players"):
 		player_inside = true
 		if player_inside:
 			enemy_attack()
