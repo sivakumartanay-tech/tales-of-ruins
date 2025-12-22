@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cnkoq0hyhiqee"]
 
-[ext_resource type="Script" uid="uid://dnftegbbxa0ga" path="res://player_2.gd" id="1_s551d"]
+[ext_resource type="Script" uid="uid://fp457aa711sm" path="res://scripts/player_2.gd" id="1_s551d"]
 [ext_resource type="SpriteFrames" uid="uid://dvmqivfiu5p6" path="res://sprites/addons/duelyst_animated_sprites/assets/spriteframes/units/f1_mech.tres" id="2_yjax8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oc1kf"]
@@ -16,17 +16,16 @@ script = ExtResource("1_s551d")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = ExtResource("2_yjax8")
-animation = &"attack"
+animation = &"death"
 autoplay = "idle"
-frame = 23
-frame_progress = 1.0
 
-[node name="Attackhitbox2" type="Area2D" parent="AnimatedSprite2D"]
+[node name="Attackhitbox2" type="Area2D" parent="AnimatedSprite2D" groups=["damages"]]
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Attackhitbox2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Attackhitbox2" groups=["damages"]]
 position = Vector2(41, 21.5)
 shape = SubResource("RectangleShape2D_oc1kf")
+disabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 26)

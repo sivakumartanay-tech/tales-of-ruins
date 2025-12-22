@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://cq026h2onkd8x"]
+
+[ext_resource type="SpriteFrames" uid="uid://c7kwrxn1ii4u8" path="res://duelyst-animated-sprites-godot-e9df7a6824b0f9fd16dc43534a93b6f150b13bca/addons2/duelyst_animated_sprites/boss_umbra.tres" id="1_4dvvg"]
+[ext_resource type="Script" uid="uid://f221ecbpkb16" path="res://scripts/enemy.gd" id="1_rnjyy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4vge2"]
+size = Vector2(39, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rnjyy"]
+size = Vector2(22, 37)
+
+[node name="Tutorial Enemy" type="Node2D" groups=["enemy"]]
+script = ExtResource("1_rnjyy")
+
+[node name="Tutorial Enemy" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = ExtResource("1_4dvvg")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" groups=["enemy"]]
+position = Vector2(1, 8)
+shape = SubResource("RectangleShape2D_4vge2")
+
+[node name="Attack hitbox" type="Area2D" parent="."]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack hitbox"]
+position = Vector2(36, 8)
+shape = SubResource("RectangleShape2D_rnjyy")
+disabled = true
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_entered" from="Hitbox" to="Hitbox" method="_on_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="body_exited" from="Hitbox" to="Hitbox" method="_on_body_exited"]
+[connection signal="body_entered" from="Attack hitbox" to="." method="_on_attack_hitbox_body_entered"]
+[connection signal="body_exited" from="Attack hitbox" to="." method="_on_attack_hitbox_body_exited"]
