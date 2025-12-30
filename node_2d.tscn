@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cq026h2onkd8x"]
 
-[ext_resource type="SpriteFrames" uid="uid://c7kwrxn1ii4u8" path="res://duelyst-animated-sprites-godot-e9df7a6824b0f9fd16dc43534a93b6f150b13bca/addons2/duelyst_animated_sprites/boss_umbra.tres" id="1_4dvvg"]
+[ext_resource type="SpriteFrames" uid="uid://c7kwrxn1ii4u8" path="res://sprites/addons/duelyst_animated_sprites/assets/spriteframes/units/boss_umbra.tres" id="1_4dvvg"]
 [ext_resource type="Script" uid="uid://f221ecbpkb16" path="res://scripts/enemy.gd" id="1_rnjyy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vge2"]
@@ -9,7 +9,7 @@ size = Vector2(39, 27)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rnjyy"]
 size = Vector2(22, 37)
 
-[node name="Tutorial Enemy" type="Node2D" groups=["enemy"]]
+[node name="Tutorial Enemy" type="Node2D" groups=["enemys"]]
 script = ExtResource("1_rnjyy")
 
 [node name="Tutorial Enemy" type="AnimatedSprite2D" parent="."]
@@ -19,17 +19,19 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="Hitbox" type="Area2D" parent="."]
-collision_mask = 3
+collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" groups=["enemy"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(1, 8)
 shape = SubResource("RectangleShape2D_4vge2")
 
 [node name="Attack hitbox" type="Area2D" parent="."]
+position = Vector2(37, 7)
+collision_layer = 8
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack hitbox"]
-position = Vector2(36, 8)
+position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_rnjyy")
 disabled = true
 
@@ -40,4 +42,3 @@ disabled = true
 [connection signal="body_exited" from="Hitbox" to="." method="_on_hitbox_body_exited"]
 [connection signal="body_exited" from="Hitbox" to="Hitbox" method="_on_body_exited"]
 [connection signal="body_entered" from="Attack hitbox" to="." method="_on_attack_hitbox_body_entered"]
-[connection signal="body_exited" from="Attack hitbox" to="." method="_on_attack_hitbox_body_exited"]
