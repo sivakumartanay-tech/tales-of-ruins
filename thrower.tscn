@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://i586chohb2l7"]
+
+[ext_resource type="Script" uid="uid://d0ihfef5qn3sk" path="res://scenes/thrower.gd" id="1_ca04e"]
+[ext_resource type="SpriteFrames" uid="uid://den5ja0mr2fev" path="res://unused files/assets/spriteframes/units/boss_skurge.tres" id="1_muk2e"]
+[ext_resource type="PackedScene" uid="uid://dkopsweqs0s6c" path="res://scenes/enemy_shot.tscn" id="2_e5k02"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e5k02"]
+radius = 20.0
+height = 48.0
+
+[node name="Thrower" type="Node2D"]
+script = ExtResource("1_ca04e")
+enemy_shot = ExtResource("2_e5k02")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_muk2e")
+animation = &"attack"
+autoplay = "idle"
+frame_progress = 0.39015085
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("CapsuleShape2D_e5k02")
+
+[node name="Shootpoint" type="Marker2D" parent="."]
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]
