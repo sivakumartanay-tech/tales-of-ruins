@@ -7,7 +7,7 @@ var chase_range = 150
 var velocity = Vector2.ZERO
 var is_moving = false
 var is_attacking = false
-var enemy_health = 50
+var enemy_health = 20
 var is_hit = false
 var player_inside = false
 var enemy_dead = false
@@ -49,22 +49,6 @@ func _process(_delta: float) -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group("damages"): # registers hits
 		enemy_hit(10) # damages enemy
-
-
-
-
-#-------------Attack------------------------------
-
-
-
-
-
-
-
-
-
-
-#----------------------------------------------------------------
 
 
 func _physics_process(delta: float) -> void:
@@ -113,6 +97,9 @@ func shoot(): # enemy attack
 	if not can_shoot:
 		return
 
+	if is_hit:
+		return
+
 	thrower.play("attack")
 
 	is_attacking = true
@@ -125,5 +112,5 @@ func shoot(): # enemy attack
 	get_tree().current_scene.add_child(shot)
 	
 	is_attacking = false
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(2.0).timeout
 	can_shoot = true

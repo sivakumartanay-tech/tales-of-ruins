@@ -13,4 +13,4 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if get_tree().get_nodes_in_group("enemys").is_empty():
-		get_tree().change_scene_to_file("res://scenes/level_3.tscn") # Teleports player to level 3
+		get_tree().change_scene_to_file("res://scenes/level_4.tscn") # Teleports player to level 4
