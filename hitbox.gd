@@ -21,8 +21,6 @@ func _on_body_entered(_body: Node2D) -> void:
 			break
 
 func _process(_delta: float) -> void:
-	if is_not_moving: # checks if moving and plays idle animation if not
-		bad_guy.play("idle")
 	if enemy_health <= 0: # checks if enemy died, 
 		hitbox.monitoring = false
 		collision_shape_2d.disabled = true # stops monitoring hits and dealing damage

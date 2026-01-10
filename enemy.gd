@@ -5,11 +5,10 @@ var chase_range = 150
 var velocity = Vector2.ZERO
 var is_moving = false
 var is_attacking = false
-var enemy_health = 50
+var enemy_health = 30
 var is_hit = false
 var player_inside = false
 var enemy_dead = false
-var enemy_scene = preload("res://scenes/node_2d.tscn")
 @onready var attack: CollisionShape2D = $"Attack hitbox/CollisionShape2D"
 @onready var hitbox: Area2D = $Hitbox
 @onready var tutorial_enemy: AnimatedSprite2D = $"Tutorial Enemy"
@@ -38,40 +37,17 @@ func _process(_delta: float) -> void:
 		$".".queue_free() # enemy "dies"
 
 
-func _on_hitbox_body_exited(_body: Node2D) -> void:
-	if _body.is_in_group("Players"): # stops damageing if player left
-		player_inside = false 
 
 
 
 
 
-func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area.is_in_group("damages"): # registers hits
+func _on_hitbox_area_entered(_area: Area2D) -> void:
+	
+	if _area.is_in_group("damages"): # registers hits
 		enemy_hit(10) # damages enemy
 
 
-
-
-#-------------Attack------------------------------
-
-
-
-func _on_hitbox_body_entered(_body: Node2D) -> void: # damages player if he enters enemy
-	if _body.is_in_group("Players") and not enemy_dead: # checks if body is player
-		player_inside = true 
-		while player_inside: # while player is inside enmey
-			if _body.health <= 0: # checks if player health is 0 or less
-				break
-			_body.take_damage(10) # damages player
-			await get_tree().create_timer(1.0).timeout # 1 second cooldown
-
-
-
-
-
-
-#----------------------------------------------------------------
 
 
 func _physics_process(delta: float) -> void:
@@ -109,7 +85,7 @@ func enemy_hit(_amount): # hurts enemy
 
 	enemy_health -= _amount # reduces health
 
-	print(enemy_health)  # temporary addition - shows enemy health
+	enmey_hit_colors()  # shows enemy hit
 	tutorial_enemy.play("hit") # plays hit animation
 	await tutorial_enemy.animation_finished # waits for hit animation to finnish
 		
@@ -139,3 +115,8 @@ func enemy_attack(_amount): # enemy attack
 func _on_attack_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Players"): #checks if the body is a player
 		body.take_damage(10) # deals 10 damage
+
+func enmey_hit_colors():
+	tutorial_enemy.modulate = Color(1,0.3,0.3) # to show enmey is hit
+	await get_tree().create_timer(0.2).timeout # duration
+	tutorial_enemy.modulate = Color(1,1,1) # normal color

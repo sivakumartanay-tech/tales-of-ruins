@@ -9,7 +9,9 @@ var dead = false
 @onready var heart_3: TextureRect = $"../CanvasLayer/Control/TextureRect"
 @onready var heart_1: TextureRect = $"../CanvasLayer/Control/TextureRect2"
 @onready var heart_2: TextureRect = $"../CanvasLayer/Control/TextureRect3"
-@onready var heart_4: TextureRect = $"../CanvasLayer/Caontrol/TextureRect4"
+@onready var heart_4: TextureRect = $"../CanvasLayer/Control/TextureRect4"
+
+
 @onready var heart_5: TextureRect = $"../CanvasLayer/Control/TextureRect5"
 @onready var full_heart = preload("res://sprites/0x72_DungeonTilesetII_v1.7/frames/ui_heart_full.png")
 @onready var half_heart = preload("res://sprites/0x72_DungeonTilesetII_v1.7/frames/ui_heart_half.png")
@@ -19,30 +21,35 @@ var health = 100
 var amount = 0
 
 func _ready() -> void: 
-	attackhitbox_2.monitoring = true  # disables attack hitbox
+
+	attackhitbox_2.monitoring = false  # disables attack hitbox
 
 
 
 func attack(): # attack function
-	if not is_attacking: # checks if it player is attacking
-
-		is_attacking = true
-		sprite.play("attack") # plays attack animation
-		
-		attackhitbox_2.monitoring = false
+	if  is_attacking:
+		return
+	is_attacking = true
+	sprite.play("attack") # plays attack animation
+	
+	await get_tree().create_timer(1.1).timeout
+	
+	move = false
+	
+	attackhitbox_2.monitoring = true
  # attack hitbox on
+	await get_tree().create_timer(0.5).timeout
+	
+	attackhitbox_2.monitoring = false
 
-		await get_tree().create_timer(0.5).timeout # attack window
-		attackhitbox_2.monitoring = true
-#attack hitbox off
+	await sprite.animation_finished
 
-		await sprite.animation_finished
-
-		is_attacking = false #stops attacking
+	is_attacking = false #stops attacking
+	move = true
 
 
 func _process(_delta: float) -> void:
-
+	
 	if health >= 90 and not health == 100: # chages to half a heart
 		heart_5.texture = half_heart
 	elif health >= 80 and not health == 100: # changes to empty heart
@@ -71,8 +78,11 @@ func _process(_delta: float) -> void:
 
 
 	var direction = Vector2.ZERO
+	if not move:
+		velocity = direction
+		return
 
-	if move and not dead: #checks if player is able to move and is not dead
+	if not dead: #checks if player is able to move and is not dead
 		if Input.is_action_pressed("move forward"):
 			direction.y -= 1 
 # moves forward
@@ -99,11 +109,11 @@ func _process(_delta: float) -> void:
 	
 	if is_attacking:
 		pass
-	elif direction != Vector2.ZERO and not is_hit:
+	elif direction != Vector2.ZERO and not is_hit and not dead:
 		sprite.play("run") # plays running animarion if moving
-	elif health <= 20:
+	elif health <= 20 and not dead:
 		sprite.play("breathing") # plays breathing animation if health is low
-	elif not is_hit:
+	elif not is_hit and not dead:
 		sprite.play("idle") # plays idle animation if not moving
 
 	if Input.is_action_pressed("Attack") and not is_attacking and not dead: # checks if attack button pressed
@@ -118,7 +128,8 @@ func _process(_delta: float) -> void:
 		sprite.play("death") # plays death animation
 		await sprite.animation_finished
 		await get_tree().create_timer(0.5).timeout
-		sprite.visible = false # player "dies"
+		get_tree().change_scene_to_file("res://scenes/game_over.tscn")
+
 		
 	
 func take_damage(_amount):

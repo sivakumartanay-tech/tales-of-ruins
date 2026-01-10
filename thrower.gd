@@ -85,7 +85,7 @@ func enemy_hit(_amount): # hurts enemy
 
 	enemy_health -= _amount # reduces health
 
-	print(enemy_health)  # temporary addition - shows enemy health
+	change_color()  #  shows enemy is being hit
 	thrower.play("hit") # plays hit animation
 	await thrower.animation_finished # waits for hit animation to finnish
 		
@@ -114,3 +114,8 @@ func shoot(): # enemy attack
 	is_attacking = false
 	await get_tree().create_timer(2.0).timeout
 	can_shoot = true
+
+func change_color():
+	thrower.modulate = Color(1,0.3,0.3)
+	await get_tree().create_timer(0.5).timeout # duration
+	thrower.modulate = Color(1,1,1)
