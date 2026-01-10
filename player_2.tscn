@@ -11,6 +11,7 @@ radius = 14.0
 height = 42.0
 
 [node name="Player 2" type="CharacterBody2D" groups=["Players"]]
+collision_mask = 4
 script = ExtResource("1_s551d")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -20,9 +21,10 @@ animation = &"death"
 autoplay = "idle"
 
 [node name="Attackhitbox2" type="Area2D" parent="AnimatedSprite2D" groups=["damages"]]
+collision_mask = 4
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Attackhitbox2" groups=["damages"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Attackhitbox2"]
 position = Vector2(41, 21.5)
 shape = SubResource("RectangleShape2D_oc1kf")
 disabled = true

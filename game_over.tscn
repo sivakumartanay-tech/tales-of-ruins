@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://dk3a1vlfjf3uy"]
+
+[ext_resource type="Script" uid="uid://uhqqgw6wq6af" path="res://scripts/game_over.gd" id="1_xeevv"]
+[ext_resource type="Texture2D" uid="uid://bw1qph6cvofh0" path="res://Screenshot 2026-01-10 at 4.58.03 PM.png" id="2_wqhvx"]
+
+[node name="Game_over" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xeevv")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -941.0
+offset_top = -694.0
+offset_right = 949.0
+offset_bottom = 336.0
+texture = ExtResource("2_wqhvx")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Exit" type="Button" parent="HBoxContainer/Control"]
+layout_mode = 0
+offset_left = -264.0
+offset_top = 55.0
+offset_right = 275.0
+offset_bottom = 167.0
+theme_override_font_sizes/font_size = 49
+text = "Exit"
+
+[node name="Camera2D" type="Camera2D" parent="HBoxContainer"]
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -248.0
+offset_top = -231.0
+offset_right = 235.0
+offset_bottom = -128.0
+theme_override_font_sizes/font_size = 36
+text = "You Died more than 3 times
+                    restart"
+
+[connection signal="pressed" from="HBoxContainer/Control/Exit" to="." method="_on_exit_pressed"]

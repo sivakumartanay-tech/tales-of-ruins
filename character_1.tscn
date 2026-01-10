@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bai0350oub0fg"]
+[gd_scene load_steps=6 format=3 uid="uid://bai0350oub0fg"]
 
 [ext_resource type="Script" uid="uid://dfdyvlxg1hn77" path="res://scripts/character_1.gd" id="1_0t6h8"]
-[ext_resource type="SpriteFrames" uid="uid://bvm73m3xyuumi" path="res://duelyst-animated-sprites-godot-e9df7a6824b0f9fd16dc43534a93b6f150b13bca/addons2/duelyst_animated_sprites/f1_3rdgeneral.tres" id="1_lwe4e"]
+[ext_resource type="SpriteFrames" uid="uid://bvm73m3xyuumi" path="res://sprites/addons/duelyst_animated_sprites/assets/spriteframes/units/f1_3rdgeneral.tres" id="1_lwe4e"]
+[ext_resource type="Texture2D" uid="uid://bjdlsw5vsgg3n" path="res://sprites/0x72_DungeonTilesetII_v1.7/frames/ui_heart_full.png" id="3_p0pq8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0t6h8"]
 size = Vector2(48.75, 35.5)
@@ -11,6 +12,7 @@ radius = 13.0
 height = 46.0
 
 [node name="Character 1" type="CharacterBody2D" groups=["Players"]]
+collision_mask = 4
 script = ExtResource("1_0t6h8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -20,15 +22,93 @@ animation = &"run"
 
 [node name="Area2D" type="Area2D" parent="AnimatedSprite2D" groups=["damages"]]
 collision_layer = 2
+collision_mask = 4
 monitoring = false
 
 [node name="Attack hitbox" type="CollisionShape2D" parent="AnimatedSprite2D/Area2D"]
-position = Vector2(46.625, 22)
+position = Vector2(39, 24)
 shape = SubResource("RectangleShape2D_0t6h8")
 disabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 25)
 shape = SubResource("CapsuleShape2D_0t6h8")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = -0.10243055
+anchor_top = -0.072530866
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 69.55556
+offset_top = 29.11111
+offset_right = 69.55554
+offset_bottom = 29.111115
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="heart1" type="TextureRect" parent="CanvasLayer/Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.57000005
+anchor_top = 0.76600003
+anchor_right = 0.57000005
+anchor_bottom = 0.76600003
+offset_left = -661.4556
+offset_top = -514.4811
+offset_right = -601.4556
+offset_bottom = -454.4811
+texture = ExtResource("3_p0pq8")
+
+[node name="heart2" type="TextureRect" parent="CanvasLayer/Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.558
+anchor_right = 0.5
+anchor_bottom = 0.558
+offset_left = -517.55554
+offset_top = -370.92114
+offset_right = -457.55554
+offset_bottom = -310.92114
+texture = ExtResource("3_p0pq8")
+
+[node name="heart3" type="TextureRect" parent="CanvasLayer/Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4992126
+anchor_top = 0.568
+anchor_right = 0.4992126
+anchor_bottom = 0.568
+offset_left = -460.55554
+offset_top = -377.87112
+offset_right = -400.5556
+offset_bottom = -317.87112
+texture = ExtResource("3_p0pq8")
+
+[node name="heart4" type="TextureRect" parent="CanvasLayer/Control"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 229.44444
+offset_top = 16.88889
+offset_right = 289.44446
+offset_bottom = 76.888885
+texture = ExtResource("3_p0pq8")
+
+[node name="heart5" type="TextureRect" parent="CanvasLayer/Control"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 285.44446
+offset_top = 15.888889
+offset_right = 345.44446
+offset_bottom = 75.888885
+texture = ExtResource("3_p0pq8")
 
 [connection signal="body_entered" from="AnimatedSprite2D/Area2D" to="." method="_on_area_2d_body_entered"]

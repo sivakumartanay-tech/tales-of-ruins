@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://do6j5dqsf2sir"]
+
+[ext_resource type="Script" uid="uid://djkordrxwlrom" path="res://scripts/door_portal.gd" id="1_x13d4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2dtnb"]
+size = Vector2(67, 34.5)
+
+[node name="door_portal" type="Node2D"]
+script = ExtResource("1_x13d4")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.5, 3.75)
+shape = SubResource("RectangleShape2D_2dtnb")
+disabled = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

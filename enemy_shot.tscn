@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dkopsweqs0s6c"]
 
 [ext_resource type="SpriteFrames" uid="uid://den5ja0mr2fev" path="res://unused files/assets/spriteframes/units/boss_skurge.tres" id="1_1kj0s"]
-[ext_resource type="Script" uid="uid://i70s3otvc000" path="res://scenes/enemy_shot.gd" id="1_itq2j"]
+[ext_resource type="Script" uid="uid://i70s3otvc000" path="res://scripts/enemy_shot.gd" id="1_itq2j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_itq2j"]
 size = Vector2(50, 20)
@@ -12,7 +12,7 @@ script = ExtResource("1_itq2j")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("1_1kj0s")
 animation = &"projectile"
-frame_progress = 0.44906768
+frame_progress = 0.5386128
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4

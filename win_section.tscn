@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://buntwaln2vckd"]
+
+[ext_resource type="Script" uid="uid://cn4kj78jbdvxx" path="res://control.gd" id="1_k801b"]
+[ext_resource type="Texture2D" uid="uid://o43rhwyme4id" path="res://Screenshot 2026-01-10 at 4.49.55 PM.png" id="2_oht85"]
+
+[node name="Win_section" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = 64.0
+offset_right = -74.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k801b")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -169.0
+offset_top = -289.0
+offset_right = 1499.0
+offset_bottom = 763.0
+texture = ExtResource("2_oht85")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 365.0
+offset_top = -81.0
+offset_right = 945.0
+offset_bottom = 114.0
+theme_override_font_sizes/font_size = 70
+text = "Congratulations!!
+        You Win!!"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 361.0
+offset_top = 268.0
+offset_right = 1015.0
+offset_bottom = 337.0
+theme_override_font_sizes/font_size = 44
+text = "Back to Title"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(671, 244)
+zoom = Vector2(0.7, 0.7)
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

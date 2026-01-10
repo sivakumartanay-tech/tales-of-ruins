@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckcpjbj7mpup2"]
+
+[ext_resource type="Script" uid="uid://dtq6ki18n4nij" path="res://scenes/pause_screen.gd" id="1_qeunj"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+process_mode = 2
+script = ExtResource("1_qeunj")
+
+[node name="Pause_screen" type="Control" parent="."]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Resume" type="Button" parent="Pause_screen"]
+layout_mode = 0
+offset_left = 380.0
+offset_top = 213.0
+offset_right = 759.0
+offset_bottom = 305.0
+text = "Resume"
+
+[node name="Exit" type="Button" parent="Pause_screen"]
+layout_mode = 0
+offset_left = 380.0
+offset_top = 311.0
+offset_right = 760.0
+offset_bottom = 424.0
+text = "Exit"
+
+[connection signal="pressed" from="Pause_screen/Resume" to="Pause_screen" method="_on_button_pressed"]
+[connection signal="pressed" from="Pause_screen/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Pause_screen/Exit" to="Pause_screen" method="_on_exit_pressed"]
+[connection signal="pressed" from="Pause_screen/Exit" to="." method="_on_exit_pressed"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://i586chohb2l7"]
 
-[ext_resource type="Script" uid="uid://d0ihfef5qn3sk" path="res://scenes/thrower.gd" id="1_ca04e"]
+[ext_resource type="Script" uid="uid://d0ihfef5qn3sk" path="res://scripts/thrower.gd" id="1_ca04e"]
 [ext_resource type="SpriteFrames" uid="uid://den5ja0mr2fev" path="res://unused files/assets/spriteframes/units/boss_skurge.tres" id="1_muk2e"]
 [ext_resource type="PackedScene" uid="uid://dkopsweqs0s6c" path="res://scenes/enemy_shot.tscn" id="2_e5k02"]
 
@@ -8,7 +8,8 @@
 radius = 20.0
 height = 48.0
 
-[node name="Thrower" type="Node2D"]
+[node name="Thrower" type="Node2D" groups=["enemys"]]
+texture_filter = 1
 script = ExtResource("1_ca04e")
 enemy_shot = ExtResource("2_e5k02")
 
@@ -16,7 +17,7 @@ enemy_shot = ExtResource("2_e5k02")
 sprite_frames = ExtResource("1_muk2e")
 animation = &"attack"
 autoplay = "idle"
-frame_progress = 0.39015085
+frame_progress = 0.033932324
 
 [node name="hitbox" type="Area2D" parent="."]
 collision_layer = 4

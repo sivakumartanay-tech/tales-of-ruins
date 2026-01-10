@@ -85,8 +85,9 @@ func enemy_hit(_amount): # hurts enemy
 
 	enemy_health -= _amount # reduces health
 
-	print(enemy_health)  # temporary addition - shows enemy health
-	boss.play("hit") # plays hit animation
+	change_color_boss()  # shows enemy is being hit
+	if not is_attacking:
+		boss.play("hit") # plays hit animation
 	await boss.animation_finished # waits for hit animation to finnish
 		
 	is_hit = false
@@ -98,24 +99,25 @@ func enemy_attack(_amount): # enemy attack
 
 	attack.disabled = false # enables attack
 
-	
+
 	boss.play("attack") # plays attack animation
+	await get_tree().create_timer(0.8).timeout
+	attack_hitbox.monitoring = true # turn on player detection
 
 	await boss.animation_finished # waits for enemy to finnish animation
-	attack_hitbox.monitoring = true # turn on player detection
 	
-	await get_tree().create_timer(0.5).timeout # waits for 0.5 seconds
-	
+		
 	attack.disabled = true # turns off player detection
 	attack_hitbox.monitoring = false
 	is_attacking = false
 	
 
 
-
-
-
-
 func _on_atttack_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Players"): #checks if the body is a player
 		body.take_damage(10) # deals 10 damage
+
+func change_color_boss():
+	boss.modulate = Color(1,0.3,0.3)
+	await get_tree().create_timer(0.5).timeout # duration
+	boss.modulate = Color(1,1,1)
